@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bordeaux: #211214;
+  --color-deep-burgundy: #3B171B;
+  --color-dypsem-red: #731B1F;
+  --color-vanilla-silk: #F3E9DC;
+  --color-alpine-oat: #DCCBB8;
+  --color-warm-greige: #A99A8D;
+  --color-dusty-rose: #C4A19A;
+  
+  --font-display: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* === KEYFRAMES === */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes signalDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.15); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* === BASE === */
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply bg-bordeaux text-vanilla-silk font-body antialiased;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  h1, h2, h3 {
+    @apply font-display tracking-tight;
+  }
+
+  ::selection {
+    background: #731B1F44;
+    color: #F3E9DC;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* === UTILITY CLASSES === */
+
+/* Animated fade-up for page load */
+.anim-fade-up {
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Scroll-reveal: elements start invisible, JS adds .revealed */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* The Signal — SVG path animation */
+.signal-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: signalDraw 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.5s;
+}
+
+/* Pulse dot */
+.pulse-dot {
+  animation: pulse-slow 2.5s ease-in-out infinite;
+}
+
+/* Marquee ticker */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* Float animation for visual elements */
+.float-anim {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Role card active state */
+.role-card {
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.role-card:hover,
+.role-card.active {
+  background: #F3E9DC;
+  color: #211214;
+  transform: translateY(-2px);
+}
+
+/* Magnetic button feel */
+.btn-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background: #F3E9DC;
+  color: #211214;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  border-radius: 100px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: white;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-primary:hover::before { transform: scaleX(1); }
+.btn-primary:hover { box-shadow: 0 8px 40px rgba(243, 233, 220, 0.25); }
+.btn-primary span, .btn-primary svg { position: relative; z-index: 1; }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 32px;
+  background: transparent;
+  color: #F3E9DC;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  border: 1.5px solid rgba(243, 233, 220, 0.2);
+  border-radius: 100px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-ghost:hover {
+  border-color: rgba(243, 233, 220, 0.6);
+  background: rgba(243, 233, 220, 0.05);
+}
+
+/* Section divider rule */
+.section-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(243,233,220,0.08), transparent);
+}
+
+/* student-card hover */
+.student-card {
+  background: rgba(59, 23, 27, 0.2);
+  border: 1px solid rgba(243,233,220,0.07);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.student-card:hover {
+  background: rgba(59, 23, 27, 0.5);
+  border-color: rgba(243,233,220,0.18);
+  transform: translateY(-4px);
+}
+
+/* Role badge colours */
+.badge-tech     { background: rgba(30,58,138,0.25); color: rgba(191,219,254,0.75); border-color: rgba(37,99,235,0.15); }
+.badge-design   { background: rgba(196,161,154,0.12); color: #C4A19A; border-color: rgba(196,161,154,0.2); }
+.badge-biz      { background: rgba(243,233,220,0.05); color: rgba(243,233,220,0.65); border-color: rgba(243,233,220,0.1); }
+.badge-mktg     { background: rgba(220,203,184,0.1); color: rgba(220,203,184,0.75); border-color: rgba(220,203,184,0.2); }
+.badge-ideation { background: rgba(115,27,31,0.12); color: #731B1F; border-color: rgba(115,27,31,0.2); }
