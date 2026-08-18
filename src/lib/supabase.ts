@@ -1,10 +1,23 @@
 import { createClient } from '@supabase/supabase-js';
 
-// These should be replaced with actual Supabase project details in .env.local
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder-project.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.placeholder';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+console.log('Supabase URL:', supabaseUrl);
+console.log('Supabase key exists:', !!supabaseAnonKey);
+
+if (!supabaseUrl) {
+  throw new Error('VITE_SUPABASE_URL is missing');
+}
+
+if (!supabaseAnonKey) {
+  throw new Error('VITE_SUPABASE_ANON_KEY is missing');
+}
+
+export const supabase = createClient(
+  supabaseUrl,
+  supabaseAnonKey
+);
 
 export type Profile = {
   id: string;
